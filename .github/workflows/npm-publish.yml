@@ -27,14 +27,15 @@ jobs:
 
       # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Step 4: Update the package version
       - name: Update package.json version
         id: update_version
         run: |
           npm version patch --no-git-tag-version
-          echo "::set-output name=NEW_VERSION::$(node -p \"require('./package.json').version\")"
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
 
       # Step 5: Commit and push the updated package.json
       - name: Commit and push changes
